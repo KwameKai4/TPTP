@@ -1,0 +1,71 @@
+---
+const findings = [
+  {
+    id: 'staff-login',
+    title: 'Staff login needs a second step',
+    priority: 'High',
+    status: 'Fixed and rechecked',
+    fields: [
+      ['What we found', 'Staff accounts used passwords alone.'],
+      ['Why it matters', 'A stolen password could give someone access to booking details or website settings.'],
+      ['What changed', 'We turned on two-step verification for staff on the test copy.'],
+      ['Recheck', 'New sign-ins required the second step. Staff could still manage bookings.'],
+    ],
+  },
+  {
+    id: 'booking-add-on',
+    title: 'Booking add-on needs an update',
+    priority: 'Medium',
+    status: 'Open',
+    fields: [
+      ['What we found', 'The booking add-on was on a version the supplier no longer supported.'],
+      ['Why it matters', 'Unsupported versions can miss security fixes and become harder to repair if bookings stop working.'],
+      ['Agreed action', 'The website provider will update or replace the add-on on the test copy and check that bookings still work.'],
+      ['Owner and due date', 'Website provider · 3 December 2026'],
+      ['Recheck', 'Pending. The provider will share the change before the follow-up check.'],
+    ],
+  },
+];
+---
+<article class="sample" aria-labelledby="florist-title">
+  <header class="sample-intro">
+    <div>
+      <p class="sample-label">Fictional example</p>
+      <h3 id="florist-title">The Willow Stem Florist</h3>
+      <p>The business, website, findings and recheck results are made up.</p>
+    </div>
+    <dl class="sample-meta">
+      <div><dt>Example website</dt><dd>willowstem.example</dd></div>
+      <div><dt>Prepared for</dt><dd>Business owner and website provider</dd></div>
+      <div><dt>Review</dt><dd><time datetime="2026-11-12">12 November 2026</time></dd></div>
+      <div><dt>Recheck</dt><dd><time datetime="2026-11-19">19 November 2026</time></dd></div>
+    </dl>
+  </header>
+  <div class="sample-summary">
+    <section>
+      <h4>Summary for the owner</h4>
+      <p>We added a second sign-in step for staff and confirmed they could still manage bookings. The website provider is handling an update to the booking add-on.</p>
+    </section>
+    <section>
+      <h4>What the review covered</h4>
+      <p>Staff sign-in and the booking add-on on a separate test copy with sample data. Payments, staff email and the live customer database were outside the agreed scope.</p>
+    </section>
+  </div>
+  <div class="sample-findings">
+    {findings.map(({ id, title, priority, status, fields }) => (
+      <section class="sample-finding" aria-labelledby={id}>
+        <h4 id={id}>{title}</h4>
+        <p class="finding-status">{priority} priority · {status}</p>
+        <dl>
+          {fields.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}
+        </dl>
+      </section>
+    ))}
+  </div>
+  <section class="sample-next">
+    <h4>Actions for the business owner</h4>
+    <p>Agree an update date with the website provider. Once the update is ready, arrange a follow-up check and record the result.</p>
+    <h4>How to reuse the report</h4>
+    <p>Use the editable Word copy to record the agreed scope, explain each finding, assign each fix and track the recheck result.</p>
+  </section>
+</article>

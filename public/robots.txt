@@ -1,0 +1,13 @@
+# TAUNTON ARCHIVE / FILE 001
+# EN: I have keys and space, but no rooms. What am I?
+# FR: J'ai des touches et un espace, mais aucune piece.
+# ES: Tengo teclas y espacio, pero ninguna habitacion.
+# Answer: a keyboard. Archive inventory: one imaginary cup of tea.
+
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: *
+Disallow:

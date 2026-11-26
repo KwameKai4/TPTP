@@ -1,0 +1,250 @@
+---
+import { business } from '../business.mjs';
+import SampleReport from '../components/SampleReport.astro';
+import '../styles.css';
+
+const { name, shortName, location, minimumDeposit, email, phoneDisplay, phoneInternational, workingHours } = business;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const report = `${base}/sample-website-security-report.docx`;
+const survey = 'https://www.gov.uk/government/statistics/cyber-security-breaches-survey-20252026/cyber-security-breaches-survey-20252026';
+const hasContact = Boolean(email || (phoneDisplay && phoneInternational));
+const navigation = [
+  ['#top', 'Home'],
+  ['#service', 'How it works'],
+  ['#report', 'Sample report'],
+  ['#why', 'Why it matters'],
+  ['#faq', 'FAQs'],
+  ['#contact', 'About and contact'],
+];
+const stages = [
+  ['Agree the work', 'We discuss what the site does, agree what to check and share a written quote. Testing starts after written permission and the deposit.'],
+  ['Check your website', 'We review the agreed areas, such as staff logins, updates and settings that protect customer information. We explain anything urgent in plain English.'],
+  ['Fix and recheck', 'We can apply agreed fixes when we have access, or give your developer clear instructions. We recheck agreed changes and tell you what still needs attention.'],
+];
+const questions = [
+  ['What is a penetration test?', 'It is an authorised security review that looks for weaknesses in an agreed part of your website. We explain what we find, why it matters and what to fix first.'],
+  ['How much does it cost?', `The minimum deposit is £${minimumDeposit}. The total depends on the size of the website, what needs reviewing and what repair work you want. You get the scope, total and deposit terms in writing before work begins.`],
+  ['Will my website have to go offline?', 'We agree a suitable time and how to pause the work if something affects the site. Where suitable, we can review a separate test copy to reduce disruption to your customers.'],
+  ['My web designer looks after my site. Can you work with them?', 'Yes. We can agree responsibilities with your designer or hosting provider and share a prioritised list of fixes with your permission.'],
+  ['Do you fix everything you find?', 'We agree which fixes we can apply and which need your developer or provider. Your report records what was fixed, what was rechecked and what still needs attention.'],
+  ['When will I hear from you?', 'We agree dates at the start. You can expect automatic email updates when checking begins, when the report is ready and when the agreed recheck is complete. You can also call or email during working hours with any questions.'],
+];
+---
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Website security testing, clear reports and practical fixes for independent businesses in Taunton and across Somerset." />
+    <meta name="referrer" content="no-referrer" />
+    {Astro.site && <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />}
+    <title>{name} | Website security for independent businesses</title>
+  </head>
+  <body>
+    <script is:inline src={`${base}/theme-init.js`}></script>
+    <a class="skip" href="#main">Skip to main content</a>
+    <header class="masthead">
+      <div class="wrap header-inner">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">{shortName}</span>
+          <span>{name}<small>{location}</small></span>
+        </a>
+        <div class="header-controls">
+          <button type="button" class="control" id="theme-toggle" aria-pressed="false" hidden>Dark mode</button>
+          <button type="button" class="control menu-control" id="menu-toggle" aria-haspopup="dialog" aria-controls="site-menu" aria-expanded="false" hidden>
+            <span class="menu-icon" aria-hidden="true"></span> Menu
+          </button>
+        </div>
+        <nav class="fallback-nav" id="fallback-nav" aria-label="Main navigation">
+          {navigation.map(([href, label]) => <a href={href}>{label}</a>)}
+        </nav>
+      </div>
+    </header>
+    <dialog class="sidebar" id="site-menu" aria-labelledby="menu-title">
+      <div class="sidebar-inner">
+        <div class="sidebar-head">
+          <h2 id="menu-title">Site menu</h2>
+          <button type="button" class="control" id="menu-close" autofocus>Close</button>
+        </div>
+        <nav aria-label="Main navigation">
+          {navigation.map(([href, label]) => <a href={href}>{label}</a>)}
+        </nav>
+      </div>
+    </dialog>
+    <main id="main" tabindex="-1">
+      <section class="hero" id="top" aria-labelledby="intro">
+        <div class="wrap hero-grid">
+          <div class="hero-copy">
+            <p class="kicker">Website security in Taunton and Somerset</p>
+            <h1 id="intro">Website security for independent businesses</h1>
+            <p class="lead">We check your website for security weaknesses, explain what we find and help put things right.</p>
+            <div class="actions">
+              <a class="button button-primary" href="#contact">Discuss your website <span aria-hidden="true">→</span></a>
+              <a class="text-link" href="#report">See a sample report</a>
+            </div>
+            <p class="deposit-note">£{minimumDeposit} minimum deposit. Written quote before work starts.</p>
+          </div>
+          <figure class="hero-photo">
+            <img src={`${base}/taunton-market-house.jpg`} alt="Market House and the square in the centre of Taunton" width="1280" height="866" fetchpriority="high" />
+            <figcaption><span>Market House, Taunton</span><a href="#photo-credit">Photo credit</a></figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section wrap" id="service" aria-labelledby="service-title">
+        <p class="kicker">How it works</p>
+        <h2 id="service-title">From the first call to the final check</h2>
+        <ol class="stages">
+          {stages.map(([title, body], index) => (
+            <li>
+              <span class="step" aria-hidden="true">0{index + 1}</span>
+              <h3>{title}</h3>
+              <p>{body}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section class="report section" id="report" aria-labelledby="report-title">
+        <div class="wrap">
+          <div class="report-head">
+            <div>
+              <p class="kicker">Sample report</p>
+              <h2 id="report-title">See what you’ll receive</h2>
+              <p class="lead">Read a finished example from a fictional Taunton florist.</p>
+            </div>
+            <div class="report-download">
+              <a class="button button-light" href={report} download>Download the Word report <span aria-hidden="true">↓</span></a>
+              <p class="format">Editable Word document (.docx)</p>
+            </div>
+          </div>
+          <SampleReport />
+        </div>
+      </section>
+
+      <section class="section wrap" id="why" aria-labelledby="why-title">
+        <div class="split risk">
+          <div>
+            <p class="kicker">Why it matters</p>
+            <h2 id="why-title">What a website break-in can cost you</h2>
+            <p>If someone gets into a staff account, they could see customer details or change what appears on your site. If your booking or enquiry page goes offline, you can lose enquiries while paying to restore it.</p>
+            <p>A planned review gives you time to fix known weaknesses, budget for bigger changes and check that the fixes work while you can still serve customers.</p>
+          </div>
+          <aside class="stat">
+            <strong>46%</strong>
+            <p>of small UK businesses identified a cyber breach or attack in the previous 12 months.</p>
+            <a href={survey}>UK Cyber Security Breaches Survey 2025/2026</a>
+          </aside>
+        </div>
+        <div class="news">
+          <h3>Recent UK cyber news</h3>
+          <article>
+            <time datetime="2026-10-06">6 October 2026</time>
+            <h4>ASOS reports access to customer contact details</h4>
+            <p>The National Cyber Security Centre said ASOS reported that names and contact details were accessed. The NCSC advised customers to watch for suspicious messages. For a small business, it’s a reason to review who can access customer records and keep only the information you need.</p>
+            <a href="https://www.ncsc.gov.uk/news/incident-affecting-asos-customers">Read the NCSC incident notice</a>
+          </article>
+          <article>
+            <time datetime="2026-11-05">5 November 2026</time>
+            <h4>Businesses report concern about supply-chain attacks</h4>
+            <p>The Office for National Statistics reported that 21% of surveyed businesses with at least 10 employees were concerned about cyber attacks disrupting their supply chains over the next year. Ask who is responsible for updates and backups when another firm hosts or runs your site.</p>
+            <a href="https://www.ons.gov.uk/businessindustryandtrade/business/businessservices/bulletins/businessinsightsandimpactontheukeconomy/5november2026">Read the ONS survey bulletin</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section faq" id="faq" aria-labelledby="faq-title">
+        <div class="wrap split">
+          <div>
+            <p class="kicker">FAQs</p>
+            <h2 id="faq-title">Common questions</h2>
+          </div>
+          <div class="answers">
+            {questions.map(([question, answer]) => (
+              <details><summary>{question}</summary><p>{answer}</p></details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section wrap split contact" id="contact" aria-labelledby="contact-title">
+        <div>
+          <p class="kicker">About and contact</p>
+          <h2 id="contact-title">Talk to {shortName}</h2>
+          <p>We’re based in Taunton, Somerset, and help independent businesses understand and fix weaknesses in their websites.</p>
+          <p>During a project, you’ll receive automatic emails when checks begin, when your report is ready and when the agreed fixes have been rechecked. You’re welcome to call or email during working hours for any reason, even if you’re just checking what a finding means.</p>
+        </div>
+        <div class="contact-card">
+          <h3>Discuss your website</h3>
+          <p>Tell us what your website does, who looks after it and what you’d like checked.</p>
+          {workingHours && <p class="hours"><strong>Working hours</strong><br />{workingHours}</p>}
+          {hasContact ? (
+            <div class="contact-links">
+              {phoneDisplay && phoneInternational && <a class="button button-primary" href={`tel:${phoneInternational}`}>Call {phoneDisplay}</a>}
+              {email && <a class="text-link" href={`mailto:${email}?subject=Website%20security%20enquiry`}>{email}</a>}
+            </div>
+          ) : <p class="hours">Phone, email and working hours will be listed here when enquiries open.</p>}
+          {email && <p class="privacy-note">We use Proton Mail for enquiries. For your privacy, leave passwords and customer details out of your first message.</p>}
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <p><strong>{name}</strong><br />{location}</p>
+        <p id="photo-credit"><a href="https://commons.wikimedia.org/wiki/File:The_Market_House,_Taunton_-_geograph.org.uk_-_5388237.jpg">The Market House, Taunton</a> by Stephen McKay. <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>. Cropped and colour adjusted in the layout.</p>
+      </div>
+    </footer>
+    <script>
+      const themeToggle = document.querySelector<HTMLButtonElement>('#theme-toggle');
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+      const root = document.documentElement;
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : systemDark.matches;
+
+      if (themeToggle) {
+        const syncTheme = () => themeToggle.setAttribute('aria-pressed', String(isDark()));
+        syncTheme();
+        themeToggle.hidden = false;
+        systemDark.addEventListener('change', syncTheme);
+        themeToggle.addEventListener('click', () => {
+          const theme = isDark() ? 'light' : 'dark';
+          root.dataset.theme = theme;
+          syncTheme();
+          try {
+            localStorage.setItem('tptp-theme', theme);
+          } catch {
+            // The selected theme still applies for this visit.
+          }
+        });
+      }
+
+      const menu = document.querySelector<HTMLDialogElement>('#site-menu');
+      const menuToggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
+      const menuClose = document.querySelector<HTMLButtonElement>('#menu-close');
+      const fallback = document.querySelector<HTMLElement>('#fallback-nav');
+
+      if (menu && menuToggle && menuClose && fallback && typeof menu.showModal === 'function') {
+        menuToggle.hidden = false;
+        fallback.hidden = true;
+        menuToggle.addEventListener('click', () => {
+          menu.showModal();
+          menuToggle.setAttribute('aria-expanded', 'true');
+        });
+        menuClose.addEventListener('click', () => menu.close());
+        menu.addEventListener('close', () => menuToggle.setAttribute('aria-expanded', 'false'));
+        menu.addEventListener('click', (event) => {
+          if (event.target === menu) menu.close();
+        });
+        for (const link of menu.querySelectorAll('a')) {
+          link.addEventListener('click', () => {
+            menu.close();
+            const target = document.getElementById(link.hash.slice(1));
+            if (target) {
+              target.tabIndex = -1;
+              target.focus({ preventScroll: true });
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
